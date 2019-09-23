@@ -117,21 +117,24 @@ var neighborhoods = [
 var markers = [];
 var map;
 var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
+var positionActual;
 
 function initMap() {
-
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition((position) => {
-			const positionActual = position.coords;
+			positionActual = position.coords;
 
 			/*===================== Ubicamos el mapa con centro en la ubicacion actual =====================*/
 			map = new google.maps.Map(document.getElementById('map'), {
 				zoom: 15,
-				center: { lat: positionActual.latitude, lng: positionActual.longitude }
+				center: { lat: positionActual.latitude, lng: positionActual.longitude },
+				mapTypeId: 'terrain'
 			});
 
 			/*===================== Creamos el marcador de la ubicacion actual =====================*/
-			crearMarcador(positionActual);
+
+			// Adds a marker at the center of the map.
+			addMarker(positionActual, "ubicacion");
 
 			socket.emit('userCoordinates', {
 				latitude: positionActual.latitude,
@@ -152,6 +155,40 @@ function initMap() {
 		});
 	} else {
 	}
+}
+
+function addMarker(location, type) {
+	if (type == "ubicacion") {
+		var marker = new google.maps.Marker({
+			position: { lat: location.latitude, lng: location.longitude },
+			map: map,
+			animation: google.maps.Animation.DROP,
+		});
+	}
+	if (type == "evento") {
+		var marker = new google.maps.Marker({
+			position: location,
+			map: map,
+			animation: google.maps.Animation.DROP,
+			icon: image
+		});
+	}
+	markers.push(marker);
+	marker.addListener('click', function () {
+		var contentPopUp = '<div id="content">' +
+			'<div id="siteNotice">' +
+			'</div>' +
+			'<h1 id="firstHeading" class="firstHeading">Ubicacion Actual</h1>' +
+			'<div id="bodyContent">' +
+			'<p><b>Hola, Anthony</b>, Esta es tu ubicación actual' +
+			'<br>disfruta de los eventos cercanos a ti.</p>' +
+			'(Last visited Setiembre 20, 2019).</p>' +
+			'</div>' +
+			'</div>';
+		new google.maps.InfoWindow({
+			content: contentPopUp
+		}).open(map, this);
+	});
 }
 
 function crearMarcador(positionActual) {
@@ -176,44 +213,41 @@ function crearMarcador(positionActual) {
 	});
 }
 
+// Sets the map on all markers in the array.
+function setMapOnAll(map) {
+	for (var i = 0; i < markers.length; i++) {
+		markers[i].setMap(map);
+	}
+}
+
+// Removes the markers from the map, but keeps them in the array.
+function clearMarkers() {
+	setMapOnAll(null);
+	addMarker(positionActual, "ubicacion");
+}
+
+// Shows any markers currently in the array.
+function showMarkers() {
+	setMapOnAll(map);
+}
+
+// Deletes all markers in the array by removing references to them.
+function deleteMarkers() {
+	clearMarkers();
+	markers = [];
+}
+
 function drop() {
 	clearMarkers();
 	for (var i = 0; i < neighborhoods.length; i++) {
+		console.log(neighborhoods[i]);
 		addMarkerWithTimeout(neighborhoods[i], i * 200);
 	}
 }
 
+
 function addMarkerWithTimeout(neighborhood, timeout) {
-
 	window.setTimeout(function () {
-		markers.push(
-			new google.maps.Marker({
-				position: neighborhood,
-				map: map,
-				animation: google.maps.Animation.DROP,
-				icon: image,
-				title: 'Evento '
-			}).addListener('click', detalles)
-			/*.addListener('click', function () { // Causa problemas con el efecto drop
-				var infowindow = new google.maps.InfoWindow({
-					content: neighborhood['content']
-				});
-				infowindow.open(map, this);
-			})*/
-			);
-
+		addMarker(neighborhood, "evento");
 	}, timeout);
-}
-
-function detalles(){
-	alert("Hola");
-}
-
-function clearMarkers() {
-	for (var i = 0; i < markers.length; i++) {
-		google.maps.event.clearInstanceListeners(markers[i]);
-		markers[i].setMap(null);
-
-	}
-	markers = [];
 }
