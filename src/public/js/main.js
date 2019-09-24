@@ -119,6 +119,8 @@ var map;
 var image = 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png';
 var positionActual;
 
+
+
 function initMap() {
 	if (navigator.geolocation) {
 		navigator.geolocation.getCurrentPosition((position) => {
@@ -134,7 +136,7 @@ function initMap() {
 			/*===================== Creamos el marcador de la ubicacion actual =====================*/
 
 			// Adds a marker at the center of the map.
-			addMarker(positionActual, "ubicacion");
+			addMarker(positionActual, "ubicacion", true);
 
 			socket.emit('userCoordinates', {
 				latitude: positionActual.latitude,
@@ -151,27 +153,58 @@ function initMap() {
 				}).addListener('click');
 			});
 
+			/* setInterval(function () { //Comentar para que no gaste recursos
+				socket.emit('myCoordinates', {
+					latitude: positionActual.latitude,
+					longitude: positionActual.longitude
+				});
+
+				socket.on('newMyCoordinates', coordsNew => {
+					//Crear el marcador
+					setMapOnAll(null); // FALTA: Hacer que solo se borre el marcador de la posicion actual
+					addMarker(positionActual, "ubicacion");
+				});
+			}, 5000); */
+ 
 		}, function () {
 		});
 	} else {
 	}
 }
 
-function addMarker(location, type) {
+
+function addMarker(location, type, efect) {
+
 	if (type == "ubicacion") {
-		var marker = new google.maps.Marker({
-			position: { lat: location.latitude, lng: location.longitude },
-			map: map,
-			animation: google.maps.Animation.DROP,
-		});
+		if (efect) {
+			var marker = new google.maps.Marker({
+				position: { lat: location.latitude, lng: location.longitude },
+				map: map,
+				animation: google.maps.Animation.DROP,//Buscar la manera de condicionar el efecto por parametro
+			});
+		} else {
+			var marker = new google.maps.Marker({
+				position: { lat: location.latitude, lng: location.longitude },
+				map: map,
+			});
+		}
 	}
 	if (type == "evento") {
-		var marker = new google.maps.Marker({
-			position: location,
-			map: map,
-			animation: google.maps.Animation.DROP,
-			icon: image
-		});
+		if (efect) {
+			var marker = new google.maps.Marker({
+				position: location,
+				map: map,
+				animation: google.maps.Animation.DROP,
+				icon: image
+			});
+		} else {
+			var marker = new google.maps.Marker({
+				position: location,
+				map: map,
+				icon: image
+			});
+		}
+		
 	}
 	markers.push(marker);
 	marker.addListener('click', function () {
@@ -223,7 +256,7 @@ function setMapOnAll(map) {
 // Removes the markers from the map, but keeps them in the array.
 function clearMarkers() {
 	setMapOnAll(null);
-	addMarker(positionActual, "ubicacion");
+	addMarker(positionActual, "ubicacion", true);
 }
 
 // Shows any markers currently in the array.
@@ -248,6 +281,6 @@ function drop() {
 
 function addMarkerWithTimeout(neighborhood, timeout) {
 	window.setTimeout(function () {
-		addMarker(neighborhood, "evento");
+		addMarker(neighborhood, "evento", true);
 	}, timeout);
 }
