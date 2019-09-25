@@ -6,12 +6,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Node js Leaflet</title>
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/menuLateral.css">
+    
+    <script src="https://kit.fontawesome.com/2d08ab27d5.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-
+    <div class="menu-lateral" id="menuToggle">
+        <a href="#" id="iconToggle" class="btn-trigger"><i class="fa fa-caret-left"></i></a>
+        <div class="menu">
+            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus recusandae ex expedita rem
+                asperiores, voluptatum odio quisquam vero corporis tenetur, perferendis, excepturi nulla placeat
+                eius
+                nisi! Nostrum praesentium voluptas corrupti, dolorem cumque deleniti exercitationem dolore ab sunt
+                ut
+                impedit tempore veritatis quaerat illo corporis consequatur vitae pariatur perferendis ipsum! Beatae
+                aliquid commodi ea reiciendis iusto, praesentium sequi maxime maiores illum consectetur nisi
+                voluptas
+                iste assumenda, deserunt non consequuntur qui accusantium. Repellendus labore, velit eaque minus
+                veritatis reiciendis quisquam possimus fugiat illo, obcaecati eum blanditiis porro vero numquam
+                maxime.
+                Labore rem non at laborum provident enim rerum maxime quod! Provident neque reiciendis, dolorum,
+                quod
+                rerum est vitae architecto et perspiciatis quis quas laborum minus cupiditate dolores similique
+                veniam
+                repellendus. Natus distinctio consectetur consequatur voluptatem quod eum ipsa praesentium qui,
+                officiis
+                porro iste sed quo, mollitia sint dolores ab provident adipisci commodi ullam aperiam doloribus et
+                quidem tempora possimus! Quaerat assumenda doloribus blanditiis voluptatibus est aliquid dolorem
+                delectus harum quisquam molestiae, qui ad! Id beatae itaque sapiente delectus laborum rerum eos modi
+                officia molestias adipisci obcaecati, tenetur ea aperiam accusamus, possimus placeat, repudiandae
+                reiciendis. Dolore libero et doloribus? Beatae, repellat harum eos impedit sequi dolore? Natus
+                impedit
+                maiores facilis, explicabo officiis quia fuga temporibus qui molestias quaerat fugiat, praesentium
+                consectetur illo aut necessitatibus, voluptatibus odio placeat eveniet eaque quidem consequuntur
+                illum
+                itaque nobis vel! Consequatur unde illo, iure repudiandae illum ducimus dolores dignissimos aliquam
+                fugit eveniet cupiditate beatae quo accusamus commodi repellat, alias reiciendis id velit animi.
+                Fugiat
+                eaque eum vitae et?</p>
+        </div>
+    </div>
     <div id="floating-panel">
         <button id="drop" onclick="drop()">Buscar Eventos Cercanos</button>
     </div>
@@ -22,6 +60,7 @@
         </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/main.js"></script>
+    <script src="/js/menu.js"></script>
 
 </body>
 
