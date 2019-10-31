@@ -237,6 +237,7 @@ function addMarker(location, type, efect) {
 				content: contentPopUp
 			}).open(map, this);
 		});
+		
 	}
 
 }
