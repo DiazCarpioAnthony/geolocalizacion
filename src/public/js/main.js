@@ -165,7 +165,7 @@ function initMap() {
 					addMarker(positionActual, "ubicacion");
 				});
 			}, 5000); */
- 
+
 		}, function () {
 		});
 	} else {
@@ -188,6 +188,23 @@ function addMarker(location, type, efect) {
 				map: map,
 			});
 		}
+
+		markers.push(marker);
+		marker.addListener('click', function () {
+			var contentPopUp = '<div id="content">' +
+				'<div id="siteNotice">' +
+				'</div>' +
+				'<h1 id="firstHeading" class="firstHeading">Ubicacion Actual</h1>' +
+				'<div id="bodyContent">' +
+				'<p><b>Hola, Anthony</b>, Esta es tu ubicación actual' +
+				'<br>disfruta de los eventos cercanos a ti.</p>' +
+				'(Last visited Setiembre 20, 2019).</p>' +
+				'</div>' +
+				'</div>';
+			new google.maps.InfoWindow({
+				content: contentPopUp
+			}).open(map, this);
+		});
 	}
 	if (type == "evento") {
 		if (efect) {
@@ -204,24 +221,24 @@ function addMarker(location, type, efect) {
 				icon: image
 			});
 		}
-		
+		markers.push(marker);
+		marker.addListener('click', function () {
+			var contentPopUp = '<div id="content">' +
+				'<div id="siteNotice">' +
+				'</div>' +
+				'<h1 id="firstHeading" class="firstHeading">Evento Nuevo</h1>' +
+				'<div id="bodyContent">' +
+				'<p><b>Evento Nuevo</b>, Esta es la ubicación' +
+				'<br>disfruta de los eventos cercanos a ti.</p>' +
+				'(Last visited Setiembre 20, 2019).</p>' +
+				'</div>' +
+				'</div>';
+			new google.maps.InfoWindow({
+				content: contentPopUp
+			}).open(map, this);
+		});
 	}
-	markers.push(marker);
-	marker.addListener('click', function () {
-		var contentPopUp = '<div id="content">' +
-			'<div id="siteNotice">' +
-			'</div>' +
-			'<h1 id="firstHeading" class="firstHeading">Ubicacion Actual</h1>' +
-			'<div id="bodyContent">' +
-			'<p><b>Hola, Anthony</b>, Esta es tu ubicación actual' +
-			'<br>disfruta de los eventos cercanos a ti.</p>' +
-			'(Last visited Setiembre 20, 2019).</p>' +
-			'</div>' +
-			'</div>';
-		new google.maps.InfoWindow({
-			content: contentPopUp
-		}).open(map, this);
-	});
+
 }
 
 function crearMarcador(positionActual) {
